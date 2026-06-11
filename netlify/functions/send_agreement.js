@@ -65,8 +65,7 @@ const data = JSON.parse(event.body);
         <p>Name: ${data.consultantData.name}</p>
         <p>Email: ${data.consultantData.email}</p>
       `,
-      const html = data.html;
-      const pdfBuffer = await page.pdf(...)
+  
 
       attachments: [
   {
