@@ -24,7 +24,7 @@ data.consultantEmail;
       to:[
    "ceo@greenarchitects.in",
    data.consultantData.email
-]
+] ,
 
       subject:
       "New Consultant Agreement - Green Architects",
@@ -62,7 +62,9 @@ New Consultant Agreement Submitted
 <p>
 PDF Agreement attached.
 </p>
-`,
+`, 
+
+
 
       attachments: [
 
