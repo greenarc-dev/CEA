@@ -1,145 +1,85 @@
 const { Resend } = require("resend");
-
-const chromium =
-require("@sparticuz/chromium");
+const chromium = require("@sparticuz/chromium");
 
 exports.handler = async (event) => {
 
-const puppeteer =
-(await import("puppeteer-core")).default;
+  const puppeteer =
+    (await import("puppeteer-core")).default;
 
-exports.handler = async (event) => {
+  try {
 
-try {
+    const data = JSON.parse(event.body);
 
-const data =
-JSON.parse(event.body);
+    const browser = await puppeteer.launch({
+      args: [...chromium.args],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: true
+    });
 
-const browser =
-await puppeteer.launch({
+    const page = await browser.newPage();
 
-args:[
-...chromium.args
-],
+    await page.setContent(data.html, {
+      waitUntil: "networkidle0"
+    });
 
-defaultViewport:
-chromium.defaultViewport,
+    await page.emulateMediaType("print");
 
-executablePath:
-await chromium.executablePath(),
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: {
+        top: "15mm",
+        right: "15mm",
+        bottom: "15mm",
+        left: "15mm"
+      }
+    });
 
-headless:true
+    await browser.close();
 
-});
+    const resend = new Resend(
+      process.env.RESEND_API_KEY
+    );
 
-const page =
-await browser.newPage();
+    await resend.emails.send({
+      from: "ceo@greenarchitects.in",
+      to: [
+        "ceo@greenarchitects.in",
+        data.consultantData.email
+      ],
+      subject: "Consultant Engagement Agreement",
+      html: `
+        <h2>Consultant Agreement Submitted</h2>
+        <p>Name: ${data.consultantData.name}</p>
+        <p>Email: ${data.consultantData.email}</p>
+      `,
+      attachments: [
+        {
+          filename: "Consultant_Agreement.pdf",
+          content: pdfBuffer.toString("base64")
+        }
+      ]
+    });
 
-await page.setContent(
-data.html,
-{
-waitUntil:"networkidle0"
-}
-);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        success: true
+      })
+    };
 
-await page.emulateMediaType(
-"print"
-);
+  } catch (error) {
 
-const pdfBuffer =
-await page.pdf({
+    console.error(error);
 
-format:"A4",
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: error.message
+      })
+    };
 
-printBackground:true,
-
-margin:{
-top:"15mm",
-right:"15mm",
-bottom:"15mm",
-left:"15mm"
-}
-
-});
-
-await browser.close();
-
-const resend =
-new Resend(
-process.env.Resend
-);
-
-await resend.emails.send({
-
-from:
-"ceo@greenarchitects.in",
-
-to:[
-"ceo@greenarchitects.in",
-data.consultantData.email
-],
-
-subject:
-"Consultant Engagement Agreement",
-
-html:`
-
-<h2>
-Consultant Agreement Submitted
-</h2>
-
-<p>
-Name:
-${data.consultantData.name}
-</p>
-
-<p>
-Email:
-${data.consultantData.email}
-</p>
-
-`,
-
-attachments:[
-
-{
-filename:
-"Consultant_Agreement.pdf",
-
-content:
-pdfBuffer.toString("base64")
-}
-
-]
-
-});
-
-return {
-
-statusCode:200,
-
-body:JSON.stringify({
-success:true
-})
-
-};
-
-}
-
-catch(error){
-
-console.error(error);
-
-return {
-
-statusCode:500,
-
-body:JSON.stringify({
-error:error.message
-})
-
-};
-
-}
+  }
 
 };
