@@ -39,7 +39,7 @@ exports.handler = async (event) => {
     await browser.close();
 
     const resend = new Resend(
-      process.env.RESEND_API_KEY
+      process.env.Resend
     );
 
     await resend.emails.send({
