@@ -8,7 +8,18 @@ exports.handler = async (event) => {
 
   try {
 
-    const data = JSON.parse(event.body);
+    if (!event.body) {
+
+  return {
+    statusCode: 400,
+    body: JSON.stringify({
+      error: "No request body received"
+    })
+  };
+
+}
+
+const data = JSON.parse(event.body);
 
     const browser = await puppeteer.launch({
       args: [...chromium.args],
@@ -61,7 +72,8 @@ exports.handler = async (event) => {
         }
       ]
     });
-
+console.log("EVENT BODY:");
+console.log(event.body);
     return {
       statusCode: 200,
       body: JSON.stringify({
