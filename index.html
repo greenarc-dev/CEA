@@ -1277,128 +1277,124 @@ async function submitAgreement(){
 
     const consultantData = {
 
-    name:
-    document.getElementById(
-    "consultantName"
-    ).value,
+        name:
+        document.getElementById(
+        "consultantName"
+        ).value,
 
-    mobile:
-    document.getElementById(
-    "consultantMobile"
-    ).value,
+        mobile:
+        document.getElementById(
+        "consultantMobile"
+        ).value,
 
-    email:
-    document.getElementById(
-    "consultantEmail"
-    ).value,
+        email:
+        document.getElementById(
+        "consultantEmail"
+        ).value,
 
-    pan:
-    document.getElementById(
-    "consultantPAN"
-    ).value,
-
-};
-const consultantEmail =
-String(
-document.getElementById(
-"consultantEmail"
-).value
-).trim();
-
-
-if(!consultantEmail){
-
-    alert(
-    "Consultant Email is required."
-    );
-
-    return;
-}
-
-const emailPattern =
-/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-if(!emailPattern.test(consultantEmail)){
-
-    alert(
-    "Please enter a valid email address."
-    );
-
-    return;
-}
-
-const element =
-document.body;
-
-const htmlContent =
-document.documentElement.outerHTML;
-
-const payload = {
-
-    consultantData,
-
-    html:
-    htmlContent
-
-};
-
-const reader =
-new FileReader();
-
-reader.onloadend =
-async function(){
-
-    const pdfBase64 =
-    reader.result.split(",")[1];
-
-    const payload = {
-
-        consultantData:
-        consultantData,
-
-        pdf:
-        pdfBase64
+        pan:
+        document.getElementById(
+        "consultantPAN"
+        ).value
 
     };
 
-    const response =
-    await fetch(
+    const consultantEmail =
+    String(
+    document.getElementById(
+    "consultantEmail"
+    ).value
+    ).trim();
 
-        "/.netlify/functions/send_agreement",
+    if(!consultantEmail){
 
-        {
+        alert(
+        "Consultant Email is required."
+        );
 
-            method:"POST",
+        return;
+    }
 
-            headers:{
-                "Content-Type":
-                "application/json"
-            },
+    const emailPattern =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            body:
-            JSON.stringify(payload)
+    if(!emailPattern.test(consultantEmail)){
+
+        alert(
+        "Please enter a valid email address."
+        );
+
+        return;
+    }
+
+    const htmlContent =
+    document.documentElement.outerHTML;
+
+    const payload = {
+
+        consultantData,
+
+        html:
+        htmlContent
+
+    };
+
+    try{
+
+        const response =
+        await fetch(
+
+            "/.netlify/functions/send_agreement",
+
+            {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                JSON.stringify(payload)
+
+            }
+
+        );
+
+        if(response.ok){
+
+            alert(
+            "Agreement submitted successfully."
+            );
+
+        }else{
+
+            const errorText =
+            await response.text();
+
+            console.error(
+            errorText
+            );
+
+            alert(
+            "Submission failed."
+            );
 
         }
 
-    );
+    }catch(error){
 
-    if(response.ok){
-
-        alert(
-        "Agreement submitted successfully."
+        console.error(
+        error
         );
 
-    }else{
-
         alert(
-        "Submission failed."
+        "Network error."
         );
 
     }
 
-};
-
-reader.readAsDataURL(pdfBlob);
 }
 
 </script>
