@@ -3,8 +3,10 @@ const { Resend } = require("resend");
 const chromium =
 require("@sparticuz/chromium");
 
+exports.handler = async (event) => {
+
 const puppeteer =
-require("puppeteer-core");
+(await import("puppeteer-core")).default;
 
 exports.handler = async (event) => {
 
