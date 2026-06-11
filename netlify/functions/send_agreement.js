@@ -1,107 +1,143 @@
 const { Resend } = require("resend");
 
+const chromium =
+require("@sparticuz/chromium");
+
+const puppeteer =
+require("puppeteer-core");
+
 exports.handler = async (event) => {
 
-  try {
+try {
 
-    const resend =
-      new Resend(
-        process.env.Resend
-      );
+const data =
+JSON.parse(event.body);
 
+const browser =
+await puppeteer.launch({
 
-    const data =
-      JSON.parse(event.body);
+args:[
+...chromium.args
+],
 
-      const consultantEmail =
-data.consultantEmail;
+defaultViewport:
+chromium.defaultViewport,
 
-    await resend.emails.send({
+executablePath:
+await chromium.executablePath(),
 
-      from:
-      "ceo@greenarchitects.in",
+headless:true
 
-      to:[
-   "ceo@greenarchitects.in",
-   data.consultantData.email
-] ,
+});
 
-      subject:
-      "New Consultant Agreement - Green Architects",
+const page =
+await browser.newPage();
 
-      html: `
+await page.setContent(
+data.html,
+{
+waitUntil:"networkidle0"
+}
+);
+
+await page.emulateMediaType(
+"print"
+);
+
+const pdfBuffer =
+await page.pdf({
+
+format:"A4",
+
+printBackground:true,
+
+margin:{
+top:"15mm",
+right:"15mm",
+bottom:"15mm",
+left:"15mm"
+}
+
+});
+
+await browser.close();
+
+const resend =
+new Resend(
+process.env.Resend
+);
+
+await resend.emails.send({
+
+from:
+"ceo@greenarchitects.in",
+
+to:[
+"ceo@greenarchitects.in",
+data.consultantData.email
+],
+
+subject:
+"Consultant Engagement Agreement",
+
+html:`
 
 <h2>
-New Consultant Agreement Submitted
+Consultant Agreement Submitted
 </h2>
 
-<table border="1" cellpadding="8">
-
-<tr>
-<td><strong>Name</strong></td>
-<td>${data.consultantData.name}</td>
-</tr>
-
-<tr>
-<td><strong>PAN</strong></td>
-<td>${data.consultantData.pan}</td>
-</tr>
-
-<tr>
-<td><strong>Mobile</strong></td>
-<td>${data.consultantData.mobile}</td>
-</tr>
-
-<tr>
-<td><strong>Email</strong></td>
-<td>${data.consultantData.email}</td>
-</tr>
-
-</table>
+<p>
+Name:
+${data.consultantData.name}
+</p>
 
 <p>
-PDF Agreement attached.
+Email:
+${data.consultantData.email}
 </p>
-`, 
 
+`,
 
+attachments:[
 
-      attachments: [
+{
+filename:
+"Consultant_Agreement.pdf",
 
-        {
-          filename:
-          "agreement.pdf",
+content:
+pdfBuffer.toString("base64")
+}
 
-          content:
-          data.pdf
-        }
+]
 
-      ]
+});
 
-    });
+return {
 
-    return {
+statusCode:200,
 
-      statusCode: 200,
+body:JSON.stringify({
+success:true
+})
 
-      body:
-      JSON.stringify({
-        success:true
-      })
+};
 
-    };
+}
 
-  } catch(err){
+catch(error){
 
-    return {
+console.error(error);
 
-      statusCode:500,
+return {
 
-      body:
-      JSON.stringify(err)
+statusCode:500,
 
-    };
+body:JSON.stringify({
+error:error.message
+})
 
-  }
+};
+
+}
 
 };

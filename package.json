@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@sparticuz/chromium": "^147.0.0",
+    "puppeteer-core": "^25.1.0",
     "resend": "^4.0.0"
   }
 }
