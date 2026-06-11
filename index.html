@@ -1330,17 +1330,10 @@ if(!emailPattern.test(consultantEmail)){
 const element =
 document.body;
 
-const htmlContent =
-document.documentElement.outerHTML;
-
-const payload = {
-
-    consultantData,
-
-    html:
-    htmlContent
-
-};
+const pdfBlob =
+await html2pdf()
+.from(element)
+.outputPdf("blob");
 
 const reader =
 new FileReader();
