@@ -1298,15 +1298,32 @@ async function submitAgreement(){
     ).value,
 
 };
+const consultantEmail =
+String(
+document.getElementById(
+"consultantEmail"
+).value
+).trim();
 
-if(
-!consultantEmail.match(
-/^[^\s@]+@[^\s@]+\.[^\s@]+$/
-)
-){
+
+if(!consultantEmail){
+
     alert(
-    "Enter a valid email address."
+    "Consultant Email is required."
     );
+
+    return;
+}
+
+const emailPattern =
+/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if(!emailPattern.test(consultantEmail)){
+
+    alert(
+    "Please enter a valid email address."
+    );
+
     return;
 }
 
