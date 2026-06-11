@@ -1273,127 +1273,78 @@ radioGroup('gst_mode');  // GST mode
 radioGroup('paymode');   // Payment mode
 radioGroup('arb_no');    // Arbitrator number
 
-async function submitAgreement(){
+window.submitAgreement = async function(){
 
     const consultantData = {
-
-    name:
-    document.getElementById(
-    "consultantName"
-    ).value,
-
-    mobile:
-    document.getElementById(
-    "consultantMobile"
-    ).value,
-
-    email:
-    document.getElementById(
-    "consultantEmail"
-    ).value,
-
-    pan:
-    document.getElementById(
-    "consultantPAN"
-    ).value,
-
-};
-const consultantEmail =
-String(
-document.getElementById(
-"consultantEmail"
-).value
-).trim();
-
-
-if(!consultantEmail){
-
-    alert(
-    "Consultant Email is required."
-    );
-
-    return;
-}
-
-const emailPattern =
-/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-if(!emailPattern.test(consultantEmail)){
-
-    alert(
-    "Please enter a valid email address."
-    );
-
-    return;
-}
-
-const element =
-document.body;
-
-const pdfBlob =
-await html2pdf()
-.from(element)
-.outputPdf("blob");
-
-const reader =
-new FileReader();
-
-reader.onloadend =
-async function(){
-
-    const pdfBase64 =
-    reader.result.split(",")[1];
-
-    const payload = {
-
-        consultantData:
-        consultantData,
-
-        pdf:
-        pdfBase64
-
+        name: document.getElementById("consultantName").value,
+        mobile: document.getElementById("consultantMobile").value,
+        email: document.getElementById("consultantEmail").value,
+        pan: document.getElementById("consultantPAN").value
     };
 
-    const response =
-    await fetch(
+    const consultantEmail =
+    String(
+        document.getElementById("consultantEmail").value
+    ).trim();
 
-        "/.netlify/functions/send_agreement",
-
-        {
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":
-                "application/json"
-            },
-
-            body:
-            JSON.stringify(payload)
-
-        }
-
-    );
-
-    if(response.ok){
-
-        alert(
-        "Agreement submitted successfully."
-        );
-
-    }else{
-
-        alert(
-        "Submission failed."
-        );
-
+    if(!consultantEmail){
+        alert("Consultant Email is required.");
+        return;
     }
+
+    const emailPattern =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailPattern.test(consultantEmail)){
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    const element = document.body;
+
+    const pdfBlob =
+    await html2pdf()
+    .from(element)
+    .outputPdf("blob");
+
+    const reader = new FileReader();
+
+    reader.onloadend = async function(){
+
+        const pdfBase64 =
+        reader.result.split(",")[1];
+
+        const payload = {
+            consultantData,
+            pdf: pdfBase64
+        };
+
+        const response =
+        await fetch(
+            "/.netlify/functions/send_agreement",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            }
+        );
+
+        if(response.ok){
+            alert("Agreement submitted successfully.");
+        }else{
+            alert("Submission failed.");
+        }
+    };
+
+    reader.readAsDataURL(pdfBlob);
 
 };
 
-reader.readAsDataURL(pdfBlob);
-
-
+window.submitAgreement = function(){
+    alert("Function loaded successfully");
+}
 </script>
 </body>
 </html>
