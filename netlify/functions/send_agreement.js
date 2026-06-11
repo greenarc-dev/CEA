@@ -65,12 +65,15 @@ const data = JSON.parse(event.body);
         <p>Name: ${data.consultantData.name}</p>
         <p>Email: ${data.consultantData.email}</p>
       `,
+      const html = data.html;
+      const pdfBuffer = await page.pdf(...)
+
       attachments: [
-        {
-          filename: "Consultant_Agreement.pdf",
-          content: pdfBuffer.toString("base64")
-        }
-      ]
+  {
+    filename: "Consultant_Agreement.pdf",
+    content: pdfBuffer.toString("base64")
+  }
+]
     });
 console.log("EVENT BODY:");
 console.log(event.body);
