@@ -1327,79 +1327,73 @@ if(!emailPattern.test(consultantEmail)){
     return;
 }
 
-const payload = {
+const element =
+document.querySelector('.page');
 
-    consultantData:
-    consultantData,
+const pdfBlob =
+await html2pdf()
+.from(element)
+.outputPdf("blob");
 
-    pdf:
-    pdfBase64
+const reader =
+new FileReader();
 
-};
+reader.onloadend =
+async function(){
 
-    const element =
-        document.querySelector('.page');
+    const pdfBase64 =
+    reader.result.split(",")[1];
 
-    const pdfBlob =
-        await html2pdf()
-        .from(element)
-        .outputPdf('blob');
+    const payload = {
 
-    const reader =
-        new FileReader();
+        consultantData:
+        consultantData,
 
-    reader.readAsDataURL(pdfBlob);
-
-    reader.onloadend =
-    async function(){
-
-        const pdfBase64 =
-            reader.result.split(',')[1];
-
-        const payload = {
-
-            pdf: pdfBase64
-
-        };
-
-        const response =
-        await fetch(
-
-            '/.netlify/functions/send-agreement',
-
-            {
-
-                method:'POST',
-
-                headers:{
-                    'Content-Type':
-                    'application/json'
-                },
-
-                body:
-                JSON.stringify(payload)
-
-            }
-
-        );
-
-        if(response.ok){
-
-            alert(
-            'Agreement submitted successfully.'
-            );
-
-        }else{
-
-            alert(
-            'Submission failed.'
-            );
-
-        }
+        pdf:
+        pdfBase64
 
     };
 
+    const response =
+    await fetch(
+
+        "/.netlify/functions/send_agreement",
+
+        {
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
+
+            body:
+            JSON.stringify(payload)
+
+        }
+
+    );
+
+    if(response.ok){
+
+        alert(
+        "Agreement submitted successfully."
+        );
+
+    }else{
+
+        alert(
+        "Submission failed."
+        );
+
+    }
+
+};
+
+reader.readAsDataURL(pdfBlob);
 }
+
 </script>
 </body>
 </html>
