@@ -464,23 +464,43 @@ textarea.fi-blk{border:1px dashed #aaa;border-radius:2px;
     <label class="cb-il"><input type="checkbox" name="sal"> Prof.</label>
     <label class="cb-il"><input type="checkbox" name="sal"> Other: <input type="text" class="fi-sm" placeholder="Title"></label>
   </div>
-  <div class="p-row">Full Legal Name:&nbsp;<input type="text" class="fi-xl" placeholder="Full name as per Aadhaar / PAN"></div>
+  <div class="p-row">Full Legal Name:&nbsp;<input
+    type="text"
+    id="consultantName"
+    class="fi-xl"
+    placeholder="Full name as per Aadhaar / PAN"></div>
   <div class="p-row">S/o &nbsp;/ D/o &nbsp;/ W/o:&nbsp;<input type="text" class="fi-lg" placeholder="Parent / Spouse name"></div>
   <div class="p-row">Residential Address:&nbsp;<input type="text" class="fi-xl" placeholder="Full address with PIN code"></div>
   <div class="p-row">
     Qualification:&nbsp;<input type="text" class="fi-lg" placeholder="e.g. B.Arch, M.Sc (Landscape), B.E. (Civil)">
   </div>
   <div class="p-row">
-    PAN:&nbsp;<input type="text" class="fi-md" placeholder="XXXXXXXXXX">
+    PAN:&nbsp;<input
+    type="text"
+    id="consultantPAN"
+    class="fi-md"
+    placeholder="XXXXXXXXXX">
     &nbsp;&nbsp;
     Aadhaar (last 4 digits):&nbsp;<input type="text" class="fi-xs" placeholder="XXXX">
   </div>
   <div class="p-row">
     GST No.:&nbsp;<input type="text" class="fi-md" placeholder="GSTIN (if registered)">
     &nbsp;&nbsp;
-    Mobile:&nbsp;<input type="text" class="fi-md" placeholder="+91 XXXXX XXXXX">
+    Mobile:&nbsp<input
+    type="text"
+    id="consultantMobile"
+    class="fi-md"
+    placeholder="+91 XXXXX XXXXX">
   </div>
-  <div class="p-row">Email:&nbsp;<input type="text" class="fi-xl" placeholder="email@domain.com"></div>
+  <div class="p-row">
+  Email:&nbsp;
+  <input
+      type="email"
+      id="consultantEmail"
+      class="fi-xl"
+      placeholder="email@domain.com"
+      required>
+</div>
   <div class="p-row">
     Consultant Type:&nbsp;
     <label class="cb-il"><input type="checkbox" name="ct"> Individual Professional</label>
@@ -1254,6 +1274,51 @@ radioGroup('paymode');   // Payment mode
 radioGroup('arb_no');    // Arbitrator number
 
 async function submitAgreement(){
+
+    const consultantData = {
+
+    name:
+    document.getElementById(
+    "consultantName"
+    ).value,
+
+    mobile:
+    document.getElementById(
+    "consultantMobile"
+    ).value,
+
+    email:
+    document.getElementById(
+    "consultantEmail"
+    ).value,
+
+    pan:
+    document.getElementById(
+    "consultantPAN"
+    ).value,
+
+};
+
+if(
+!consultantEmail.match(
+/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+)
+){
+    alert(
+    "Enter a valid email address."
+    );
+    return;
+}
+
+const payload = {
+
+    consultantData:
+    consultantData,
+
+    pdf:
+    pdfBase64
+
+};
 
     const element =
         document.querySelector('.page');

@@ -6,37 +6,63 @@ exports.handler = async (event) => {
 
     const resend =
       new Resend(
-        process.env.RESEND_API_KEY
+        process.env.Resend
       );
+
 
     const data =
       JSON.parse(event.body);
 
+      const consultantEmail =
+data.consultantEmail;
+
     await resend.emails.send({
 
       from:
-      "agreements@greenarchitects.in",
+      "ceo@greenarchitects.in",
 
-      to: [
-        "info@greenarchitects.in"
-      ],
+      to:[
+   "ceo@greenarchitects.in",
+   data.consultantData.email
+]
 
       subject:
-      "New Consultant Agreement",
+      "New Consultant Agreement - Green Architects",
 
       html: `
-        <h2>New Agreement Submitted</h2>
 
-        <p>
-          Consultant:
-          ${data.name}
-        </p>
+<h2>
+New Consultant Agreement Submitted
+</h2>
 
-        <p>
-          Email:
-          ${data.email}
-        </p>
-      `,
+<table border="1" cellpadding="8">
+
+<tr>
+<td><strong>Name</strong></td>
+<td>${data.consultantData.name}</td>
+</tr>
+
+<tr>
+<td><strong>PAN</strong></td>
+<td>${data.consultantData.pan}</td>
+</tr>
+
+<tr>
+<td><strong>Mobile</strong></td>
+<td>${data.consultantData.mobile}</td>
+</tr>
+
+<tr>
+<td><strong>Email</strong></td>
+<td>${data.consultantData.email}</td>
+</tr>
+
+</table>
+
+<p>
+PDF Agreement attached.
+</p>
+`,
 
       attachments: [
 
