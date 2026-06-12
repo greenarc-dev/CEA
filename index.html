@@ -1288,6 +1288,24 @@ radioGroup('gst_mode');  // GST mode
 radioGroup('paymode');   // Payment mode
 radioGroup('arb_no');    // Arbitrator number
 
+
+
+function showLoader(){
+
+    document.getElementById(
+        "loadingOverlay"
+    ).style.display = "flex";
+
+}
+
+function hideLoader(){
+
+    document.getElementById(
+        "loadingOverlay"
+    ).style.display = "none";
+
+}
+
 async function submitAgreement(){
 
     const consultantData = {
@@ -1471,45 +1489,183 @@ const payload = {
 
 };
 
-const response =
-await fetch(
+showLoader();
 
-"/.netlify/functions/send_agreement",
+document.querySelector(
+'.btn-submit'
+).disabled = true;
 
-{
-    method:"POST",
+try{
 
-    headers:{
-        "Content-Type":
-        "application/json"
-    },
+    showLoader();
 
-    body:
-    JSON.stringify(payload)
-}
+    document.querySelector(
+    '.btn-submit'
+    ).disabled = true;
 
-);
-
-if(response.ok){
-
-    alert(
-    "Agreement submitted successfully."
+    const response =
+    await fetch(
+        "/.netlify/functions/send_agreement",
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(payload)
+        }
     );
 
-}else{
+    if(response.ok){
 
-    const error =
-    await response.text();
+        hideLoader();
 
-    console.log(error);
+        document.querySelector(
+        '.btn-submit'
+        ).disabled = false;
+
+        alert(
+        "Agreement submitted successfully."
+        );
+
+    }else{
+
+        hideLoader();
+
+        document.querySelector(
+        '.btn-submit'
+        ).disabled = false;
+
+        alert(
+        "Submission failed."
+        );
+    }
+
+}catch(error){
+
+    hideLoader();
+
+    document.querySelector(
+    '.btn-submit'
+    ).disabled = false;
+
+    console.error(error);
 
     alert(
-    "Submission failed."
+    "Network error."
     );
+
+
 
 }
 
 }
 </script>
+
+<!-- Loading Overlay -->
+
+<div id="loadingOverlay">
+
+    <div class="loader-box">
+
+        <div class="spinner"></div>
+
+        <div class="loader-title">
+            Processing Agreement...
+        </div>
+
+        <div class="loader-sub">
+            Generating PDF and sending email.
+            Please wait.
+        </div>
+
+    </div>
+
+</div>
+<style>
+/* ===== LOADING OVERLAY ===== */
+
+#loadingOverlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(255,255,255,.92);
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:99999;
+
+}
+
+.loader-box{
+
+    text-align:center;
+
+    max-width:300px;
+
+}
+
+.spinner{
+
+    width:70px;
+
+    height:70px;
+
+    border:6px solid #d8d8d8;
+
+    border-top:6px solid #1a3d28;
+
+    border-radius:50%;
+
+    animation:
+    spin 1s linear infinite;
+
+    margin:auto;
+
+}
+
+@keyframes spin{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+.loader-title{
+
+    margin-top:18px;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    color:#1a3d28;
+
+}
+
+.loader-sub{
+
+    margin-top:8px;
+
+    font-size:13px;
+
+    color:#555;
+
+    line-height:1.5;
+
+}
+
+</style>
 </body>
 </html>
