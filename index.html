@@ -1281,12 +1281,12 @@ setupSignatureUpload(
     "witness2SignaturePreview"
 );
 
-//radioGroup('sal');       // Title salutation
-//radioGroup('role');      // Consultant role
-//radioGroup('ct');        // Consultant type
-//radioGroup('gst_mode');  // GST mode
-//radioGroup('paymode');   // Payment mode
-//radioGroup('arb_no');    // Arbitrator number
+radioGroup('sal');       // Title salutation
+radioGroup('role');      // Consultant role
+radioGroup('ct');        // Consultant type
+radioGroup('gst_mode');  // GST mode
+radioGroup('paymode');   // Payment mode
+radioGroup('arb_no');    // Arbitrator number
 
 async function submitAgreement(){
 
@@ -1345,25 +1345,21 @@ if(!emailPattern.test(consultantEmail)){
 const element =
 document.body;
 
+/* ---------- TEXT INPUTS ---------- */
+
 document.querySelectorAll(
-    "input, textarea"
+    'input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"]'
 ).forEach(function(el){
 
-    if(
-        el.type !== "file" &&
-        el.type !== "checkbox" &&
-        el.type !== "radio"
-    ){
-
-        el.setAttribute(
-            "value",
-            el.value
-        );
-
-    }
+    el.setAttribute(
+        "value",
+        el.value
+    );
 
 });
 
+
+/* ---------- TEXTAREAS ---------- */
 
 document.querySelectorAll(
     "textarea"
@@ -1374,6 +1370,8 @@ document.querySelectorAll(
 
 });
 
+
+/* ---------- CHECKBOXES ---------- */
 
 document.querySelectorAll(
     'input[type="checkbox"]'
@@ -1390,6 +1388,62 @@ document.querySelectorAll(
 
         el.removeAttribute(
             "checked"
+        );
+
+    }
+
+});
+
+
+/* ---------- RADIO BUTTONS ---------- */
+
+document.querySelectorAll(
+    'input[type="radio"]'
+).forEach(function(el){
+
+    if(el.checked){
+
+        el.setAttribute(
+            "checked",
+            "checked"
+        );
+
+    }else{
+
+        el.removeAttribute(
+            "checked"
+        );
+
+    }
+
+});
+
+
+/* ---------- SELECT DROPDOWNS ---------- */
+
+document.querySelectorAll(
+    "select"
+).forEach(function(select){
+
+    Array.from(
+        select.options
+    ).forEach(function(option){
+
+        option.removeAttribute(
+            "selected"
+        );
+
+    });
+
+    if(
+        select.selectedIndex >= 0
+    ){
+
+        select.options[
+            select.selectedIndex
+        ].setAttribute(
+            "selected",
+            "selected"
         );
 
     }
