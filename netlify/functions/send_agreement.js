@@ -1,107 +1,179 @@
 const { Resend } = require("resend");
+const chromium = require("@sparticuz/chromium");
 
 exports.handler = async (event) => {
 
-  try {
+    try {
 
-    const resend =
-      new Resend(
-        process.env.Resend
-      );
+        const puppeteer =
+        (await import("puppeteer-core")).default;
+
+        const data =
+        JSON.parse(event.body);
+
+        const browser =
+        await puppeteer.launch({
+
+            args:
+            chromium.args,
+
+            executablePath:
+            await chromium.executablePath(),
+
+            defaultViewport:
+            chromium.defaultViewport,
+
+            headless:true
+
+        });
+
+        const page =
+        await browser.newPage();
+
+        await page.setContent(
+    data.html,
+    {
+        waitUntil:"networkidle0",
+        timeout:120000
+    }
+);
+
+        await page.emulateMediaType(
+            "print"
+        );
+
+      const pdfBuffer =
+await page.pdf({
+
+    format:"A4",
+
+    printBackground:true,
+
+    preferCSSPageSize:true,
+
+    displayHeaderFooter:false,
+
+    margin:{
+        top:"10mm",
+        right:"10mm",
+        bottom:"10mm",
+        left:"10mm"
+    }
+
+});
+
+await browser.close();
+ 
+
+        const resend =
+        new Resend(
+            process.env.Resend_Test
+        );
 
 
-    const data =
-      JSON.parse(event.body);
+console.log(
+    "PDF bytes:",
+    pdfBuffer.length
+);
 
-      const consultantEmail =
-data.consultantEmail;
+console.log(
+    "PDF header:",
+    pdfBuffer
+    .slice(0,20)
+    .toString()
+);
 
-    await resend.emails.send({
+console.log("PDF SIZE:", pdfBuffer.length);
+console.log(
+    "PDF HEADER:",
+    pdfBuffer.slice(0, 10).toString()
+);
 
-      from:
-      "ceo@greenarchitects.in",
+const pdfBase64 =
+Buffer.from(pdfBuffer).toString("base64");
 
-      to:[
-   "ceo@greenarchitects.in",
-   data.consultantData.email
-] ,
-
-      subject:
-      "New Consultant Agreement - Green Architects",
-
-      html: `
-
-<h2>
-New Consultant Agreement Submitted
-</h2>
-
-<table border="1" cellpadding="8">
-
-<tr>
-<td><strong>Name</strong></td>
-<td>${data.consultantData.name}</td>
-</tr>
-
-<tr>
-<td><strong>PAN</strong></td>
-<td>${data.consultantData.pan}</td>
-</tr>
-
-<tr>
-<td><strong>Mobile</strong></td>
-<td>${data.consultantData.mobile}</td>
-</tr>
-
-<tr>
-<td><strong>Email</strong></td>
-<td>${data.consultantData.email}</td>
-</tr>
-
-</table>
-
-<p>
-PDF Agreement attached.
-</p>
-`, 
+console.log(
+    "BASE64 LENGTH:",
+    pdfBase64.length
+);
 
 
+        const emailResult =
+        await resend.emails.send({
 
-      attachments: [
+            from:
+            "ceo@greenarchitects.in",
 
-        {
-          filename:
-          "agreement.pdf",
+            to:[
+                "ceo@greenarchitects.in",
+                data.consultantData.email
+            ],
 
-          content:
-          data.pdf
-        }
+            subject:
+            "Consultant Engagement Agreement - Submission",
 
-      ]
+            html:`
 
-    });
+                <h2>
+                Consultant Engagement Agreement 
+                </h2>
 
-    return {
+                <p>
+                Name:
+                ${data.consultantData.name}
+                </p>
 
-      statusCode: 200,
+                <p>
+                Email:
+                ${data.consultantData.email}
+                </p>
 
-      body:
-      JSON.stringify({
-        success:true
-      })
+                <p>
+                Phone number:
+                ${data.consultantData.mobile}
+                </p>
+            `,
 
-    };
 
-  } catch(err){
-
-    return {
-
-      statusCode:500,
-
-      body:
-      JSON.stringify(err)
-
-    };
-
+attachments: [
+  {
+    filename: "Consultant_Agreement.pdf",
+    content: pdfBase64
   }
+]
+
+        });
+
+  console.log(
+   "EMAIL RESULT:",
+   JSON.stringify(emailResult)
+);
+
+
+
+return {
+
+    statusCode:200,
+
+    body:JSON.stringify({
+        success:true
+    })
+
+};
+    } catch(error){
+
+        console.error(error);
+
+        return {
+
+            statusCode:500,
+
+            body:JSON.stringify({
+                error:error.message
+            })
+
+        };
+
+    }
 
 };
