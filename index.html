@@ -422,10 +422,10 @@ textarea.fi-blk{border:1px dashed #aaa;border-radius:2px;
 
 
 <p style="text-align:center;margin-bottom:6px;">
-  This Consultant Engagement Agreement ("<strong>Agreement</strong>") is executed on this
-  &nbsp;<input type="text" class="fi-xs" placeholder="DD">&nbsp; day of
+  This Consultant Engagement Agreement ("<strong>Agreement</strong>") <br> is executed on
+  &nbsp;<input type="date" class="fi-date" placeholder="DD/MM/YYYY">&nbsp; </br>               <!--day of
   &nbsp;<input type="text" class="fi-md" placeholder="Month, Year">&nbsp;
-</p>
+</p> -->
 <p style="text-align:center;font-weight:700;font-size:12pt;margin:14px 0 4px;">BETWEEN</p>
 
 <!-- ====== PARTY 1 ====== -->
@@ -436,18 +436,22 @@ textarea.fi-blk{border:1px dashed #aaa;border-radius:2px;
     <sup style="font-size:7pt;color:#b8960c;" title="Legal Note">†</sup>,
     having its registered office at No. 10, First Cross, Fourth Street,
     Jai Nagar Extension, Karumandapam, Tiruchirappalli – 620 001, Tamil Nadu, India.
-  </div>
-  <div class="p-row">
-    <b>PAN</b>: ABAPU9477A;
-    <b>GST No.:</b>33ABAPU9477A1ZL
-  </div>
-  <div class="p-row">
+  </div> 
+
+  <br> <div class="p-row">
     <b>Authorised Representative:</b> T JOSEPH VIJU , CEO - Green Architects
   </div>
   <div class="p-row">
+    <b>PAN</b>: ABAPU9477A;
+    <b>GST No.: </b>33ABAPU9477A1ZL
+  </div>
+  </br> 
+
+  <br>
+  <div class="p-row">
     hereinafter referred to as the "<strong>Company</strong>" or "<strong>Green Architects</strong>", which expression shall,
     unless repugnant to the context, include its successors, legal representatives, and assigns.
-  </div>
+  </div><br>
   
 </div>
 
@@ -468,29 +472,33 @@ textarea.fi-blk{border:1px dashed #aaa;border-radius:2px;
     type="text"
     id="consultantName"
     class="fi-xl"
-    placeholder="Full name as per Aadhaar / PAN"></div>
-  <div class="p-row">S/o &nbsp;/ D/o &nbsp;/ W/o:&nbsp;<input type="text" class="fi-lg" placeholder="Parent / Spouse name"></div>
-  <div class="p-row">Residential Address:&nbsp;<input type="text" class="fi-xl" placeholder="Full address with PIN code"></div>
+    placeholder="Full name as per Aadhaar / PAN" required></div>
+  <div class="p-row">S/o &nbsp;/ D/o &nbsp;/ W/o:&nbsp;<input type="text" class="fi-lg" placeholder="Parent / Spouse name" required></div>
+  <div class="p-row">Residential Address:&nbsp;<textarea 
+  rows="1" 
+  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" 
+  style="width: 100%; resize: none; overflow-y: hidden; box-sizing: border-box;" required>
+</textarea></div>
   <div class="p-row">
-    Qualification:&nbsp;<input type="text" class="fi-lg" placeholder="e.g. B.Arch, M.Sc (Landscape), B.E. (Civil)">
+    Qualification:&nbsp;<input type="text" class="fi-lg" placeholder="e.g. B.Arch, M.Sc (Landscape), B.E. (Civil)" required>
   </div>
   <div class="p-row">
     PAN:&nbsp;<input
     type="text"
     id="consultantPAN"
     class="fi-md"
-    placeholder="XXXXXXXXXX">
+    placeholder="XXXXXXXXXX" required>
     &nbsp;&nbsp;
-    Aadhaar (last 4 digits):&nbsp;<input type="text" class="fi-xs" placeholder="XXXX">
+    Aadhaar (last 4 digits):&nbsp;<input type="number" class="fi-xs" placeholder="XXXX">
   </div>
   <div class="p-row">
     GST No.:&nbsp;<input type="text" class="fi-md" placeholder="GSTIN (if registered)">
     &nbsp;&nbsp;
     Mobile:&nbsp<input
-    type="text"
+    type="number"
     id="consultantMobile"
     class="fi-md"
-    placeholder="+91 XXXXX XXXXX">
+    placeholder="+91 XXXXX XXXXX" required>
   </div>
   <div class="p-row">
   Email:&nbsp;
@@ -510,9 +518,9 @@ textarea.fi-blk{border:1px dashed #aaa;border-radius:2px;
     <label class="cb-il"><input type="checkbox" name="ct"> Private Limited Company</label>
   </div>
   <div class="p-row">Firm / Company Name (if consulting as an entity):&nbsp;<input type="text" class="fi-xl" placeholder="Firm / Company name, if applicable"></div>
-  <div class="p-row">
+  <br><div class="p-row">
 hereinafter referred to as the "<strong>Consultant</strong>", including its legal representatives, successors and permitted assigns.
-</div>
+</div></br>
 </div>
 
 <p style="text-align:center;margin:12px 0 6px;font-size:10.5pt;">
@@ -532,13 +540,13 @@ hereinafter referred to as the "<strong>Consultant</strong>", including its lega
 
   <div class="sub"><strong>1.1</strong>&nbsp; Green Architects hereby appoints the Consultant in the following capacity (select one):</div>
   <div class="cb-grp">
-    <label class="cb-it"><input type="checkbox" name="role">
+    <label class="cb-it"><input type="radio" name="role">
       <span class="cb-lbl"><strong>Senior Consultant</strong> — Lead technical authority, design oversight, and principal advisory responsibilities.</span></label>
-    <label class="cb-it"><input type="checkbox" name="role">
+    <label class="cb-it"><input type="radio" name="role">
       <span class="cb-lbl"><strong>Consultant</strong> — Designated professional services in the assigned field of expertise.</span></label>
-    <label class="cb-it"><input type="checkbox" name="role">
+    <label class="cb-it"><input type="radio" name="role">
       <span class="cb-lbl"><strong>Associate Consultant</strong> — Supporting role in project execution, documentation, and site coordination.</span></label>
-    <label class="cb-it"><input type="checkbox" name="role">
+    <label class="cb-it"><input type="radio" name="role">
       <span class="cb-lbl"><strong>Technical Advisor</strong> — Advisory, review, peer-checking, and quality assurance functions.</span></label>
   </div>
 
@@ -604,15 +612,15 @@ hereinafter referred to as the "<strong>Consultant</strong>", including its lega
   <div class="sub"><strong>4.4</strong>&nbsp; Green Architects shall deduct <strong>Tax Deducted at Source (TDS)</strong> under <strong>Section 194J</strong> of the Income Tax Act, 1961 (Professional and Technical Services) at the prevailing applicable rate (currently <strong>10%</strong> for professional services), or at the rate specified in a valid certificate of lower deduction issued by the Income Tax Department, and shall issue <strong>Form 16A</strong> quarterly.</div>
   <div class="sub"><strong>4.5</strong>&nbsp; Professional fees quoted in the Project-Specific Agreement shall be (select one):</div>
   <div class="cb-grp">
-    <label class="cb-it"><input type="checkbox" name="gst_mode"><span class="cb-lbl">Exclusive of GST — GST shall be charged additionally by the Consultant as per applicable rate.</span></label>
-    <label class="cb-it"><input type="checkbox" name="gst_mode"><span class="cb-lbl">Inclusive of all taxes (GST and TDS-grossed basis to be clarified in Project-Specific Agreement).</span></label>
-    <label class="cb-it"><input type="checkbox" name="gst_mode"><span class="cb-lbl">To be specified separately in each Project-Specific Agreement.</span></label>
+    <label class="cb-it"><input type="radio" name="gst_mode"><span class="cb-lbl">Exclusive of GST — GST shall be charged additionally by the Consultant as per applicable rate.</span></label>
+    <label class="cb-it"><input type="radio" name="gst_mode"><span class="cb-lbl">Inclusive of all taxes (GST and TDS-grossed basis to be clarified in Project-Specific Agreement).</span></label>
+    <label class="cb-it"><input type="radio" name="gst_mode"><span class="cb-lbl">To be specified separately in each Project-Specific Agreement.</span></label>
   </div>
   <div class="sub"><strong>4.6</strong>&nbsp; Preferred payment mode (select one):</div>
   <div class="cb-grp">
-    <label class="cb-it"><input type="checkbox" name="paymode"><span class="cb-lbl">NEFT / RTGS direct bank transfer</span></label>
-    <label class="cb-it"><input type="checkbox" name="paymode"><span class="cb-lbl">Account Payee Cheque</span></label>
-    <label class="cb-it"><input type="checkbox" name="paymode"><span class="cb-lbl">UPI / Instant Payment</span></label>
+    <label class="cb-it"><input type="radio" name="paymode"><span class="cb-lbl">NEFT / RTGS direct bank transfer</span></label>
+    <label class="cb-it"><input type="radio" name="paymode"><span class="cb-lbl">Account Payee Cheque</span></label>
+    <label class="cb-it"><input type="radio" name="paymode"><span class="cb-lbl">UPI / Instant Payment</span></label>
   </div>
   <div class="sub"><strong>4.7</strong>&nbsp; The Consultant shall furnish the following documents for payment processing:</div>
   <div class="sub-al">
@@ -867,8 +875,8 @@ hereinafter referred to as the "<strong>Consultant</strong>", including its lega
   <div class="sub-al">
     <p>
       (a) Number of Arbitrators (select one):&nbsp;
-      <label class="cb-il"><input type="checkbox" name="arb_no"> Sole Arbitrator</label>
-      <label class="cb-il"><input type="checkbox" name="arb_no"> Panel of Three Arbitrators</label>
+      <label class="cb-il"><input type="radio" name="arb_no"> Sole Arbitrator</label>
+      <label class="cb-il"><input type="radio" name="arb_no"> Panel of Three Arbitrators</label>
     </p>
     <p>(b) Seat and Venue of Arbitration:&nbsp;<strong>Tiruchirappalli, Tamil Nadu, India</strong></p>
     <p>(c) Language of Arbitral Proceedings:&nbsp;<strong>English</strong></p>
@@ -960,8 +968,8 @@ background:#fff;
 
       <div class="sig-line"></div>
       <div class="sig-lbl">
-        Date:&nbsp;<input type="text" class="fi-date" placeholder="DD / MM / YYYY">
-        &nbsp;&nbsp;Place:&nbsp;<input type="text" class="fi-sm" placeholder="Trichy">
+        Date:&nbsp;<input type="date" class="fi-date" placeholder="DD / MM / YYYY">
+        &nbsp;&nbsp; <br>Place:&nbsp;<input type="text" class="fi-sm" placeholder="City"></br>
       </div>
       <div class="sig-lbl" style="margin-top:8px;">Official Seal / Rubber Stamp:</div>
       <div class="sig-stamp">[ Seal / Stamp of Green Architects ]</div>
@@ -1006,8 +1014,8 @@ background:#fff;
 </div>
       <div class="sig-line"></div>
       <div class="sig-lbl">
-        Date:&nbsp;<input type="text" class="fi-date" placeholder="DD / MM / YYYY">
-        &nbsp;&nbsp;Place:&nbsp;<input type="text" class="fi-sm" placeholder="City">
+        Date:&nbsp;<input type="date" class="fi-date" placeholder="DD / MM / YYYY">
+        &nbsp;&nbsp; <br> Place:&nbsp;<input type="text" class="fi-sm" placeholder="City"></br>
       </div>
       <div class="sig-lbl" style="margin-top:8px;">Firm / Company Seal (if applicable):</div>
       <div class="sig-stamp">[ Seal / Stamp of Consultant Firm, if applicable ]</div>
@@ -1024,8 +1032,12 @@ background:#fff;
       <div class="sig-lbl">Full Name:</div>
       <input type="text" class="fi-blk" placeholder="Witness 1 Full Name">
       <div class="sig-lbl">Address:</div>
-      <input type="text" class="fi-blk" placeholder="Witness 1 Full Address">
-      <div class="sig-lbl">Aadhaar / Government ID No.:&nbsp;<input type="text" class="fi-md" placeholder="ID No."></div>
+      <textarea 
+  rows="1" 
+  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" 
+  style="width: 100%; resize: none; overflow-y: hidden; box-sizing: border-box;">
+</textarea>
+      <div class="sig-lbl">Aadhaar / Government ID No.:&nbsp;<input type="number" class="fi-md" placeholder="ID No."></div>
       <div class="sig-lbl">
     Signature <span style="color:red;">*</span>
 </div>
@@ -1060,15 +1072,19 @@ background:#fff;
 ">
 
 </div>
-      <div class="sig-lbl">Date:&nbsp;<input type="text" class="fi-date" placeholder="DD / MM / YYYY"></div>
+      <div class="sig-lbl">Date:&nbsp;<input type="date" class="fi-date" placeholder="DD / MM / YYYY"></div>
     </div>
     <div class="sig-box">
       <div class="sig-ttl">Witness 2</div>
       <div class="sig-lbl">Full Name:</div>
       <input type="text" class="fi-blk" placeholder="Witness 2 Full Name">
       <div class="sig-lbl">Address:</div>
-      <input type="text" class="fi-blk" placeholder="Witness 2 Full Address">
-      <div class="sig-lbl">Aadhaar / Government ID No.:&nbsp;<input type="text" class="fi-md" placeholder="ID No."></div>
+      <textarea 
+  rows="1" 
+  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" 
+  style="width: 100%; resize: none; overflow-y: hidden; box-sizing: border-box;">
+</textarea>
+      <div class="sig-lbl">Aadhaar / Government ID No.:&nbsp;<input type="number" class="fi-md" placeholder="ID No."></div>
      <div class="sig-lbl">
     Signature <span style="color:red;">*</span>
 </div>
@@ -1103,7 +1119,7 @@ background:#fff;
 ">
 
 </div>
-      <div class="sig-lbl">Date:&nbsp;<input type="text" class="fi-date" placeholder="DD / MM / YYYY"></div>
+      <div class="sig-lbl">Date:&nbsp;<input type="date" class="fi-date" placeholder="DD / MM / YYYY"></div>
     </div>
   </div>
 </div>
@@ -1150,7 +1166,6 @@ background:#fff;
 
 <!-- ====== SCRIPT ====== -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
 function resetForm(){
 
@@ -1266,12 +1281,12 @@ setupSignatureUpload(
     "witness2SignaturePreview"
 );
 
-radioGroup('sal');       // Title salutation
-radioGroup('role');      // Consultant role
-radioGroup('ct');        // Consultant type
-radioGroup('gst_mode');  // GST mode
-radioGroup('paymode');   // Payment mode
-radioGroup('arb_no');    // Arbitrator number
+//radioGroup('sal');       // Title salutation
+//radioGroup('role');      // Consultant role
+//radioGroup('ct');        // Consultant type
+//radioGroup('gst_mode');  // GST mode
+//radioGroup('paymode');   // Payment mode
+//radioGroup('arb_no');    // Arbitrator number
 
 async function submitAgreement(){
 
@@ -1330,70 +1345,117 @@ if(!emailPattern.test(consultantEmail)){
 const element =
 document.body;
 
-const pdfBlob =
-await html2pdf()
-.from(element)
-.outputPdf("blob");
+document.querySelectorAll(
+    "input, textarea"
+).forEach(function(el){
 
-const reader =
-new FileReader();
+    if(
+        el.type !== "file" &&
+        el.type !== "checkbox" &&
+        el.type !== "radio"
+    ){
 
-reader.onloadend =
-async function(){
-
-    const pdfBase64 =
-    reader.result.split(",")[1];
-
-    const payload = {
-
-        consultantData:
-        consultantData,
-
-        pdf:
-        pdfBase64
-
-    };
-
-    const response =
-    await fetch(
-
-        "/.netlify/functions/send_agreement",
-
-        {
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":
-                "application/json"
-            },
-
-            body:
-            JSON.stringify(payload)
-
-        }
-
-    );
-
-    if(response.ok){
-
-        alert(
-        "Agreement submitted successfully."
-        );
-
-    }else{
-
-        alert(
-        "Submission failed."
+        el.setAttribute(
+            "value",
+            el.value
         );
 
     }
 
+});
+
+
+document.querySelectorAll(
+    "textarea"
+).forEach(function(el){
+
+    el.innerHTML =
+    el.value;
+
+});
+
+
+document.querySelectorAll(
+    'input[type="checkbox"]'
+).forEach(function(el){
+
+    if(el.checked){
+
+        el.setAttribute(
+            "checked",
+            "checked"
+        );
+
+    }else{
+
+        el.removeAttribute(
+            "checked"
+        );
+
+    }
+
+});
+
+
+const printClone =
+document.documentElement.cloneNode(true);
+
+
+console.log(
+    document.documentElement.outerHTML
+);
+
+const htmlContent =
+document.documentElement.outerHTML;
+
+const payload = {
+
+    consultantData,
+
+    html:
+    document.documentElement.outerHTML
+
 };
 
-reader.readAsDataURL(pdfBlob);
+const response =
+await fetch(
+
+"/.netlify/functions/send_agreement",
+
+{
+    method:"POST",
+
+    headers:{
+        "Content-Type":
+        "application/json"
+    },
+
+    body:
+    JSON.stringify(payload)
 }
 
+);
+
+if(response.ok){
+
+    alert(
+    "Agreement submitted successfully."
+    );
+
+}else{
+
+    const error =
+    await response.text();
+
+    console.log(error);
+
+    alert(
+    "Submission failed."
+    );
+
+}
+
+}
 </script>
 </body>
 </html>
