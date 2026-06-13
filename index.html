@@ -512,19 +512,11 @@ new Date()
   maxlength="200"
   oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'" 
   style="width: 100%; resize: none; overflow-y: hidden; box-sizing: border-box;" required>
-</textarea></div></br>
-
-
- <div class="p-row">
-    Qualification:&nbsp;<input
-    type="text"
-    class="fi-blk"
-    placeholder="e.g. Ph.D, M.Arch., M.E"
-    required
-    pattern="[A-Za-z.,() ]+"
-    oninput="this.value=this.value.replace(/[^A-Za-z.,() ]/g,'')">
-  </div> 
-  <br><div class="p-row">
+</textarea></div>
+  <div class="p-row">
+    Qualification:&nbsp;<input type="text" class="fi-lg" placeholder="e.g.  P.HD, M.Arch., M.E" required>
+  </div>
+  <div class="p-row">
     PAN:&nbsp;<input
     type="text"
     id="consultantPAN"
